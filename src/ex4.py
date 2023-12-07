@@ -30,7 +30,6 @@ def do_run():
         n_overlap  = len(intersect)
         card_deck = add_n_cards(card_deck, i+1, n_overlap)
         if n_overlap > 0:
-            print(pow(2, n_overlap-1))
             total += pow(2, n_overlap-1)
 
 
