@@ -46,7 +46,7 @@ def pt1(expansion_factor=1):
     info(f"ans pt1 = {total}")
 
 if __name__ == '__main__':
-    pt1()
+    pt1(2)
     pt1(1000000)
 
 
