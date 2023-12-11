@@ -72,7 +72,6 @@ def do_run():
         for inp in input_ranges:
             if inp[0] == inp[1]:
                 print('error')
-                input_ranges.remover
 
     input_ranges = input_ranges + new_input
     for i in input_ranges:
