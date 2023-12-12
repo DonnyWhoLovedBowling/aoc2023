@@ -1,18 +1,19 @@
 import logging
 import regex as re
 from copy import deepcopy as dc
-from logging import info, debug, error
+from logging import info, debug
 from line_profiler_pycharm import profile
 
 logging.basicConfig(
     format='%(asctime)s %(levelname)-8s %(message)s',
-    level=logging.DEBUG,
+    level=logging.INFO,
     datefmt='%Y-%m-%d %H:%M:%S')
 
 in_file = open("../data/ex12.txt")
-lines = [l.replace('\n', '') for l in in_file.readlines()]
+lines = [line.replace('\n', '') for line in in_file.readlines()]
 regex_map = dict()
 find_map = dict()
+
 
 @profile
 def calc_regex(sizes):
@@ -55,6 +56,8 @@ def find(sub_line: str, sizes: list, possibilities):
             possibilities += 1
     find_map[key] = possibilities
     return possibilities
+
+
 @profile
 def pt1(unfold=False):
     total = 0
@@ -74,7 +77,3 @@ def pt1(unfold=False):
 if __name__ == '__main__':
     pt1()
     pt1(True)
-
-
-
-
