@@ -44,7 +44,6 @@ def solution(pt2=False):
                             hashmap[box][ix][1] = int(word[-1])
                         else:
                             hashmap[box].append([label, int(word[-1])])
-
                     else:
                         warning("c not clear")
                 elif c == '=':
