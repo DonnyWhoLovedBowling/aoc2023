@@ -1,9 +1,7 @@
-import sys
 import logging
-from logging import info, debug, warning, error
+from logging import info, debug
 from line_profiler_pycharm import profile
 
-sys.setrecursionlimit(1000)
 
 logging.basicConfig(
     format='%(asctime)s %(levelname)-8s %(message)s',
@@ -14,7 +12,6 @@ in_file = open("../data/ex16.txt")
 lines = [l.replace('\n', '') for l in in_file.readlines()]
 energized = set()
 trajectory = set()
-# checked = 0
 
 
 def in_scope(pos):
@@ -113,6 +110,7 @@ def solution():
                 max_score = len(energized)
                 debug(f"improved score: {direction} {pos} {max_score}")
     info(f"ans pt2: {max_score}")
+
 
 if __name__ == '__main__':
     solution()
