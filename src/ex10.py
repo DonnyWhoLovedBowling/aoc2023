@@ -1,10 +1,5 @@
 import logging
-import os
-import math
 from logging import info, debug, error
-from line_profiler_pycharm import profile
-from copy import deepcopy as dc
-from functools import cmp_to_key
 
 logging.basicConfig(level=logging.DEBUG)
 in_file = open("../data/ex10.txt")
