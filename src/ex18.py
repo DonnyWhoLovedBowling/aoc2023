@@ -1,4 +1,6 @@
-import heapq
+from matplotlib.patches import Rectangle
+import matplotlib.pyplot as plt
+
 import logging
 from logging import info, debug, warning, error
 from line_profiler_pycharm import profile
@@ -12,89 +14,68 @@ in_file = open("../data/ex18.txt")
 lines = [l.replace('\n', '') for l in in_file.readlines()]
 
 
-@profile
-def visualize(visited, min_x, max_x, min_y, max_y):
-    for i in range(min_y, max_y+1):
-        new_line = ''
-        for j in range(min_x, max_x+1):
-            if (j, i) in visited:
-                new_line += '#'
-            else:
-                new_line += '.'
-        info(new_line)
-
-@profile
-def calc_interior(visited, min_x, max_x, min_y, max_y):
-    lagoon = set()
-    for i in range(min_y, max_y+1):
-        in_border = False
-        from_above = False
-        crossings = 0
-        for j in range(min_x, max_x+1):
-            if (j, i) in visited:
-                if in_border:
-                    in_polygon = True
-                else:
-                    in_polygon = True
-                    if (j, i+1) in visited and (j, i-1) in visited:
-                        crossings += 1
-                    elif (j, i+1) in visited:
-                        in_border = True
-                        from_above = False
-                    elif (j, i-1) in visited:
-                        in_border = True
-                        from_above = True
-                    else:
-                        raise ValueError(f"horizontal single line? {(j, i)}")
-            else:
-                if in_border:
-                    if ((j-1, i-1) in visited) != from_above:
-                        crossings += 1
-                in_polygon = ((crossings % 2) == 1)
-                in_border = False
-                from_above = False
-
-            if in_polygon:
-                lagoon.add((j, i))
-    return lagoon
-
 def add_vec(a, b):
     return tuple(map(sum, zip(a, b)))
 
 
-def solution():
-    min_x, min_y, max_x, max_y = (0, 0, 0, 0)
+def pt1():
     cursor = (0, 0)
-    polygon = {cursor}
-
+    sx1y2 = 0
+    sy1x2 = 0
+    border_length = 0
     for line in lines:
         inputs = line.split(" ")
         if inputs[0] == 'R':
             direction = (1, 0)
         elif inputs[0] == 'U':
-            direction = (0, -1)
+            direction = (0, 1)
         elif inputs[0] == 'L':
             direction = (-1, 0)
         elif inputs[0] == 'D':
-            direction = (0, 1)
+            direction = (0, -1)
         else:
             raise ValueError("direction not clear!")
+        size = int(inputs[1])
+        border_length += size
+        new_cursor = add_vec(cursor, (direction[0]*size, direction[1] * size))
+        sx1y2 += cursor[0]*new_cursor[1]
+        sy1x2 += cursor[1]*new_cursor[0]
+        cursor = new_cursor
+    area = abs(sy1x2-sx1y2)/2.
+    correction = border_length/2 + 1
+    info(area+correction)
 
-        for i in range(0, int(inputs[1])):
-            cursor = add_vec(cursor, direction)
-            polygon.add(cursor)
-            if cursor[0] < min_x:
-                min_x = cursor[0]
-            if cursor[0] > max_x:
-                max_x = cursor[0]
-            if cursor[1] < min_y:
-                min_y = cursor[1]
-            if cursor[1] > max_y:
-                max_y = cursor[1]
-    lagoon = calc_interior(polygon, min_x, max_x, min_y, max_y)
-    visualize(lagoon, min_x, max_x, min_y, max_y)
-    info(f"ans pt1 = {len(lagoon)}")
+
+def pt2():
+    cursor = (0, 0)
+    sx1y2 = 0
+    sy1x2 = 0
+    border_length = 0
+    for line in lines:
+        inputs = line.split(" ")[2]
+        dir_code = int(inputs[-2])
+
+        if dir_code == 0:
+            direction = (1, 0)
+        elif dir_code == 1:
+            direction = (0, 1)
+        elif dir_code == 2:
+            direction = (-1, 0)
+        elif dir_code == 3:
+            direction = (0, -1)
+        else:
+            raise ValueError("direction not clear!")
+        size = int(inputs[2:-2], 16)
+        border_length += size
+        new_cursor = add_vec(cursor, (direction[0]*size, direction[1] * size))
+        sx1y2 += cursor[0]*new_cursor[1]
+        sy1x2 += cursor[1]*new_cursor[0]
+        cursor = new_cursor
+    area = abs(sx1y2-sy1x2)/2.
+    correction = border_length/2 + 1
+    info(area+correction)
 
 
 if __name__ == '__main__':
-    solution()
+    pt1()
+    pt2()
