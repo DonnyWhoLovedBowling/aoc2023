@@ -1,10 +1,5 @@
-from matplotlib.patches import Rectangle
-import matplotlib.pyplot as plt
-
 import logging
-from logging import info, debug, warning, error
-from line_profiler_pycharm import profile
-
+from logging import info
 logging.basicConfig(
     format='%(asctime)s %(levelname)-8s %(message)s',
     level=logging.INFO,
@@ -20,9 +15,8 @@ def add_vec(a, b):
 
 def pt1():
     cursor = (0, 0)
-    sx1y2 = 0
-    sy1x2 = 0
     border_length = 0
+    area = 0
     for line in lines:
         inputs = line.split(" ")
         if inputs[0] == 'R':
@@ -38,18 +32,17 @@ def pt1():
         size = int(inputs[1])
         border_length += size
         new_cursor = add_vec(cursor, (direction[0]*size, direction[1] * size))
-        sx1y2 += cursor[0]*new_cursor[1]
-        sy1x2 += cursor[1]*new_cursor[0]
+        dx = cursor[0]-new_cursor[0]
+        y_avg = (cursor[1]+new_cursor[1])/2
+        area += (dx*y_avg)
         cursor = new_cursor
-    area = abs(sy1x2-sx1y2)/2.
     correction = border_length/2 + 1
-    info(area+correction)
+    info(abs(area)+correction)
 
 
 def pt2():
     cursor = (0, 0)
-    sx1y2 = 0
-    sy1x2 = 0
+    area = 0
     border_length = 0
     for line in lines:
         inputs = line.split(" ")[2]
@@ -67,13 +60,13 @@ def pt2():
             raise ValueError("direction not clear!")
         size = int(inputs[2:-2], 16)
         border_length += size
-        new_cursor = add_vec(cursor, (direction[0]*size, direction[1] * size))
-        sx1y2 += cursor[0]*new_cursor[1]
-        sy1x2 += cursor[1]*new_cursor[0]
+        new_cursor = add_vec(cursor, (direction[0] * size, direction[1] * size))
+        dx = cursor[0] - new_cursor[0]
+        y_avg = (cursor[1] + new_cursor[1]) / 2
+        area += (dx * y_avg)
         cursor = new_cursor
-    area = abs(sx1y2-sy1x2)/2.
-    correction = border_length/2 + 1
-    info(area+correction)
+    correction = border_length / 2 + 1
+    info(abs(area) + correction)
 
 
 if __name__ == '__main__':
