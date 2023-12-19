@@ -6,7 +6,7 @@ from operator import mul
 
 logging.basicConfig(
     format='%(asctime)s %(levelname)-8s %(message)s',
-    level=logging.DEBUG,
+    level=logging.INFO,
     datefmt='%Y-%m-%d %H:%M:%S')
 
 in_file = open("../data/ex19.txt")
@@ -73,8 +73,6 @@ def calc_possibilities(constraints, wf_name):
         return
 
     new_constraints = dc(constraints)
-    debug((wf_name, constraints))
-
     if wf_name not in 'AR':
         for rule in workflows[wf_name]:
             next_constraints = dc(new_constraints)
@@ -98,6 +96,7 @@ def calc_possibilities(constraints, wf_name):
     else:
         if wf_name == 'A':
             total_possibilities += possibilities
+            debug(f" set of possibilities per rating; {new_constraints}")
         else:
             total_impossibilities += possibilities
 
