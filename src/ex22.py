@@ -5,7 +5,7 @@ from collections import deque
 
 logging.basicConfig(
     format='%(asctime)s %(levelname)-8s %(message)s',
-    level=logging.DEBUG,
+    level=logging.INFO,
     datefmt='%Y-%m-%d %H:%M:%S')
 
 in_file = open("../data/ex22.txt")
@@ -155,14 +155,13 @@ def pt1():
             bid = dq.popleft()
             if bid not in supports_map:
                 continue
-            # debug((bid, supports_map[bid]))
             for new_bid in new_supports[bid]:
                 new_supported_by[new_bid].remove(bid)
                 if len(new_supported_by[new_bid]) == 0:
                     would_fall.add(new_bid)
                     dq.append(new_bid)
             del new_supports[bid]
-        debug(f"number of removables for {current_bid}: {len(would_fall)}")
+        debug(f"number of falling bricks for {current_bid}: {len(would_fall)}")
         total += len(would_fall)
     info(f"total chain length: {total}")
 
