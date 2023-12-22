@@ -85,16 +85,9 @@ def pt1():
     global supports_map, supported_by_map
     for i, line in enumerate(lines):
         brick = dict()
-        x_min, y_min, z_min = tuple(map(int, line.split("~")[0].split(',')))
-        x_max, y_max, z_max = tuple(map(int, line.split("~")[1].split(',')))
-        assert x_max >= x_min
-        assert y_max >= y_min
-        brick['x_min'] = x_min
-        brick['x_max'] = x_max
-        brick['y_min'] = y_min
-        brick['y_max'] = y_max
-        brick['z_min'] = z_min
-        brick['z_max'] = z_max
+        brick['x_min'], brick['y_min'], brick['z_min'] = tuple(map(int, line.split("~")[0].split(',')))
+        brick['x_max'], brick['y_max'], brick['z_max'] = tuple(map(int, line.split("~")[1].split(',')))
+        z_min, z_max = brick['z_min'], brick['z_max']
         brick['id'] = i
         bricks[i] = brick
         if z_min in bricks_by_z_min:
@@ -107,9 +100,6 @@ def pt1():
             bricks_by_z_max[z_max] = {i}
 
     fill_support_maps()
-    debug(supported_by_map)
-    debug(supports_map)
-
     for z in [z for z in sorted(bricks_by_z_min.keys()) if z != 1]:
         bids = dc(bricks_by_z_min[z])
         for bid in bids:
